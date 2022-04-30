@@ -8,7 +8,7 @@ resource "azurerm_function_app" "function_app" {
   storage_account_access_key = var.storage_account_access_key
   os_type                    = var.os_type
   https_only                 = var.https_only
-  app_settings = var.function_app_application_settings
+  app_settings               = var.function_app_application_settings
 
   dynamic "site_config" {
     for_each = lookup(var.settings, "site_config", {}) != {} ? [1] : []
@@ -40,7 +40,7 @@ resource "azurerm_function_app" "function_app" {
         }
       }
 
-       dynamic "ip_restriction" {
+      dynamic "ip_restriction" {
         for_each = try(var.settings.site_config.ip_restriction, {})
 
         content {
@@ -73,7 +73,7 @@ resource "azurerm_function_app" "function_app" {
     }
   }
 
-   dynamic "auth_settings" {
+  dynamic "auth_settings" {
     for_each = lookup(var.settings, "auth_settings", {}) != {} ? [1] : []
 
     content {
