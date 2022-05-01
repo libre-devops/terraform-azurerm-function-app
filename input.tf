@@ -4,11 +4,6 @@ variable "active_directory_auth_setttings" {
   default     = {}
 }
 
-variable "app_amount" {
-  description = "The amount of apps to be created"
-  type        = number
-}
-
 variable "app_name" {
   description = "The name of the function app"
   type        = string

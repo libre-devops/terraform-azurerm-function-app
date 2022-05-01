@@ -42,7 +42,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_active_directory_auth_setttings"></a> [active\_directory\_auth\_setttings](#input\_active\_directory\_auth\_setttings) | Acitve directory authentication provider settings for app service | `any` | `{}` | no |
-| <a name="input_app_amount"></a> [app\_amount](#input\_app\_amount) | The amount of apps to be created | `number` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | The name of the function app | `string` | n/a | yes |
 | <a name="input_app_service_plan_id"></a> [app\_service\_plan\_id](#input\_app\_service\_plan\_id) | Id of the App Service Plan for Function App hosting | `string` | n/a | yes |
 | <a name="input_connection_strings"></a> [connection\_strings](#input\_connection\_strings) | Connection strings for App Service | `list(map(string))` | `[]` | no |
@@ -67,6 +66,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_id"></a> [id](#output\_id) | The ID of the App Service. |
+| <a name="output_fnc_app_id"></a> [fnc\_app\_id](#output\_fnc\_app\_id) | The ID of the App Service. |
+| <a name="output_fnc_app_name"></a> [fnc\_app\_name](#output\_fnc\_app\_name) | The name of the App Service. |
 | <a name="output_outbound_ip_addresses"></a> [outbound\_ip\_addresses](#output\_outbound\_ip\_addresses) | A comma separated list of outbound IP addresses |
 | <a name="output_possible_outbound_ip_addresses"></a> [possible\_outbound\_ip\_addresses](#output\_possible\_outbound\_ip\_addresses) | A comma separated list of outbound IP addresses. not all of which are necessarily in use |
