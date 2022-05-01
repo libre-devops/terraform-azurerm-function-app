@@ -1,6 +1,24 @@
 This module has been deprecated by Microsoft in the 3.x provider, you should use [Linux Function App](https://registry.terraform.io/modules/libre-devops/linux-function-app/azurerm/latest) or [Windows Function App](https://registry.terraform.io/modules/libre-devops/windows-function-app/azurerm/latest) instead
 
 ```hcl
+module "asp_old" {
+  source = "registry.terraform.io/libre-devops/app-service-plan/azurerm"
+
+  rg_name  = module.rg.rg_name
+  location = module.rg.rg_location
+  tags     = module.rg.rg_tags
+
+  app_service_plan_name          = "plan-${var.short}-${var.loc}-${terraform.workspace}-01"
+  add_to_app_service_environment = false
+
+  kind = "Linux"
+  sku = {
+    tier = "Dynamic"
+    size = "Y1"
+  }
+}
+
+#checkov:skip=CKV2_AZURE_145:TLS 1.2 is allegedly the latest supported as per hashicorp docs
 module "fnc_app_old" {
   source = "registry.terraform.io/libre-devops/function-app/azurerm"
 
@@ -8,12 +26,25 @@ module "fnc_app_old" {
   location = module.rg.rg_location
   tags     = module.rg.rg_tags
 
-  app_amount           = 1
-  app_name             = "fnc-${var.short}-${var.loc}-${terraform.workspace}"
-  app_service_plan_id  = module.plan.service_plan_id
-  os_type              = "Linux"
-  storage_account_name = module.sa.sa_name
+  app_name                   = "fnc-${var.short}-${var.loc}-${terraform.workspace}-01"
+  app_service_plan_id        = module.plan.service_plan_id
+  os_type                    = "Linux"
+  storage_account_name       = module.sa.sa_name
+  storage_account_access_key = module.sa.sa_primary_access_key
+  identity_type              = "SystemAssigned"
+
+  settings = {
+    site_config = {
+      min_tls_version = "1.2"
+      http2_enabled   = true
+    }
+
+    auth_settings = {
+      enabled = true
+    }
+  }
 }
+
 ```
 
 ## Requirements
@@ -50,8 +81,8 @@ No modules.
 | <a name="input_function_app_vnet_integration_enabled"></a> [function\_app\_vnet\_integration\_enabled](#input\_function\_app\_vnet\_integration\_enabled) | Enable VNET integration with the Function App. `function_app_vnet_integration_subnet_id` is mandatory if enabled | `bool` | `false` | no |
 | <a name="input_function_app_vnet_integration_subnet_id"></a> [function\_app\_vnet\_integration\_subnet\_id](#input\_function\_app\_vnet\_integration\_subnet\_id) | ID of the subnet to associate with the Function App (VNet integration) | `string` | `null` | no |
 | <a name="input_https_only"></a> [https\_only](#input\_https\_only) | Disable http procotol and keep only https | `bool` | `true` | no |
-| <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | UserAssigned Identities ID to add to Function App. Mandatory if type is UserAssigned | `list(string)` | `null` | no |
-| <a name="input_identity_type"></a> [identity\_type](#input\_identity\_type) | Add an Identity (MSI) to the function app. Possible values are SystemAssigned or UserAssigned | `string` | `"SystemAssigned"` | no |
+| <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of user managed identity ids to be assigned to the VM. | `list(string)` | `[]` | no |
+| <a name="input_identity_type"></a> [identity\_type](#input\_identity\_type) | The Managed Service Identity Type of this Virtual Machine. | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure location. | `string` | n/a | yes |
 | <a name="input_os_type"></a> [os\_type](#input\_os\_type) | A string indicating the Operating System type for this function app. | `string` | n/a | yes |
 | <a name="input_rg_name"></a> [rg\_name](#input\_rg\_name) | Resource group name | `string` | n/a | yes |
@@ -66,7 +97,12 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_custom_domain_vertification_id"></a> [custom\_domain\_vertification\_id](#output\_custom\_domain\_vertification\_id) | The identifier for DNS txt ownership |
+| <a name="output_default_hostname"></a> [default\_hostname](#output\_default\_hostname) | The default hostname for the function app |
 | <a name="output_fnc_app_id"></a> [fnc\_app\_id](#output\_fnc\_app\_id) | The ID of the App Service. |
 | <a name="output_fnc_app_name"></a> [fnc\_app\_name](#output\_fnc\_app\_name) | The name of the App Service. |
+| <a name="output_fnc_identity"></a> [fnc\_identity](#output\_fnc\_identity) | The managed identity block from the Function app |
+| <a name="output_kind"></a> [kind](#output\_kind) | The kind of the functionapp |
 | <a name="output_outbound_ip_addresses"></a> [outbound\_ip\_addresses](#output\_outbound\_ip\_addresses) | A comma separated list of outbound IP addresses |
 | <a name="output_possible_outbound_ip_addresses"></a> [possible\_outbound\_ip\_addresses](#output\_possible\_outbound\_ip\_addresses) | A comma separated list of outbound IP addresses. not all of which are necessarily in use |
+| <a name="output_site_credential"></a> [site\_credential](#output\_site\_credential) | The output of any site credentials |
