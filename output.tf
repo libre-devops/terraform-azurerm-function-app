@@ -19,8 +19,8 @@ output "possible_outbound_ip_addresses" {
 }
 
 output "fnc_identity" {
-  description = "map with key `Function Id`, value `list of identity` created for the Virtual Machine."
-  value       = zipmap(azurerm_function_app.function_app.id, azurerm_function_app.function_app.identity)
+  description = "The managed identity block from the Function app"
+  value       = azurerm_function_app.function_app.identity
 }
 
 output "custom_domain_vertification_id" {
