@@ -147,18 +147,6 @@ resource "azurerm_function_app" "function_app" {
     }
   }
 
-  dynamic "storage_account" {
-    for_each = var.storage_mounts
-    content {
-      name         = lookup(storage_account.value, "name")
-      type         = lookup(storage_account.value, "type", "AzureFiles")
-      account_name = lookup(storage_account.value, "account_name", null)
-      share_name   = lookup(storage_account.value, "share_name", null)
-      access_key   = lookup(storage_account.value, "access_key", null)
-      mount_path   = lookup(storage_account.value, "mount_path", null)
-    }
-  }
-
   dynamic "source_control" {
     for_each = lookup(var.settings, "source_control", {}) != {} ? [1] : []
 
