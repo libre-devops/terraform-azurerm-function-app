@@ -51,15 +51,15 @@ variable "https_only" {
 }
 
 variable "identity_ids" {
-  description = "UserAssigned Identities ID to add to Function App. Mandatory if type is UserAssigned"
+  description = "Specifies a list of user managed identity ids to be assigned to the VM."
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "identity_type" {
-  description = "Add an Identity (MSI) to the function app. Possible values are SystemAssigned or UserAssigned"
+  description = "The Managed Service Identity Type of this Virtual Machine."
   type        = string
-  default     = "SystemAssigned"
+  default     = ""
 }
 
 variable "location" {
