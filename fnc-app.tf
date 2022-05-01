@@ -5,9 +5,10 @@ resource "azurerm_function_app" "function_app" {
   resource_group_name        = var.rg_name
   storage_account_name       = var.storage_account_name
   storage_account_access_key = var.storage_account_access_key
-  os_type                    = var.os_type
+  os_type                    = lower(var.os_type)
   https_only                 = var.https_only
   app_settings               = var.function_app_application_settings
+  version                    = var.function_app_version
 
   dynamic "site_config" {
     for_each = lookup(var.settings, "site_config", {}) != {} ? [1] : []
@@ -183,8 +184,6 @@ resource "azurerm_function_app" "function_app" {
       identity_ids = length(var.identity_ids) > 0 ? var.identity_ids : []
     }
   }
-
-  version = var.function_app_version
 
   tags = var.tags
 }
