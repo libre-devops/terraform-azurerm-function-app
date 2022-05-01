@@ -31,11 +31,12 @@ resource "azurerm_function_app" "function_app" {
       scm_use_main_ip_restriction      = lookup(var.settings.site_config, "scm_use_main_ip_restriction", null)
       vnet_route_all_enabled           = lookup(var.settings.site_config, "vnet_route_all_enabled", null)
 
-      dynamic "cors" {
-        for_each = lookup(site_config.value, "cors", []) != [] ? ["fake"] : []
+       dynamic "cors" {
+        for_each = try(var.settings.site_config.cors, {})
+
         content {
-          allowed_origins     = lookup(site_config.value.cors, "allowed_origins", [])
-          support_credentials = lookup(site_config.value.cors, "support_credentials", false)
+          allowed_origins     = lookup(cors, "allowed_origins", null)
+          support_credentials = lookup(cors, "support_credentials", null)
         }
       }
 
