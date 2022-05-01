@@ -32,7 +32,7 @@ resource "azurerm_function_app" "function_app" {
       scm_use_main_ip_restriction      = lookup(var.settings.site_config, "scm_use_main_ip_restriction", null)
       vnet_route_all_enabled           = lookup(var.settings.site_config, "vnet_route_all_enabled", null)
 
-       dynamic "cors" {
+      dynamic "cors" {
         for_each = try(var.settings.site_config.cors, {})
 
         content {

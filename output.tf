@@ -24,21 +24,21 @@ output "fnc_identity" {
 }
 
 output "custom_domain_vertification_id" {
-  value = azurerm_function_app.function_app.custom_domain_verification_id
+  value       = azurerm_function_app.function_app.custom_domain_verification_id
   description = "The identifier for DNS txt ownership"
 }
 
 output "default_hostname" {
-  value = azurerm_function_app.function_app.default_hostname
+  value       = azurerm_function_app.function_app.default_hostname
   description = "The default hostname for the function app"
 }
 
 output "site_credential" {
-  value = azurerm_function_app.function_app.site_credential
+  value       = azurerm_function_app.function_app.site_credential
   description = "The output of any site credentials"
 }
 
 output "kind" {
-  value = azurerm_function_app.function_app.kind
+  value       = azurerm_function_app.function_app.kind
   description = "The kind of the functionapp"
 }
