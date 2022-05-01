@@ -1,6 +1,6 @@
 resource "azurerm_function_app" "function_app" {
   count                      = var.app_amount
-  name                       = "${var.app_name}${format("%02d", count.index + 1)}"
+  name                       = "${var.app_name}-${format("%02d", count.index + 1)}"
   app_service_plan_id        = var.app_service_plan_id
   location                   = var.location
   resource_group_name        = var.rg_name
